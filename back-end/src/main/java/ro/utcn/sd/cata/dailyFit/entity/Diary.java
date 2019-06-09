@@ -4,8 +4,9 @@ import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Date;
+
 import java.util.Iterator;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
 @Data
 public class Diary {
     @Id
-    @NotNull
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Integer totalKcal;

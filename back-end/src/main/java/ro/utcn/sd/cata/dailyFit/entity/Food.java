@@ -11,14 +11,14 @@ import java.util.List;
 @Entity
 public class Food {
     @Id
-    @NotNull
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private Integer name;
-    private Integer kcal;
-    private Integer protein;
-    private Integer carbs;
-    private Integer fats;
+    private String name;
+    private Integer kcals; //per 100g
+    private Float proteins;
+    private Float carbs;
+    private Float fats;
 
     @OneToMany(mappedBy = "food")
     private List<DiaryEntry> diaryEntries = new ArrayList<>();

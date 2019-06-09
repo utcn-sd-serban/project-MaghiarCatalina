@@ -1,7 +1,10 @@
 package ro.utcn.sd.cata.dailyFit.dto;
 
-import java.util.Date;
+import lombok.Data;
 
+import java.sql.Date;
+
+@Data
 public class DiaryDTO {
     private Integer totalKcal;
     private Integer totalProteins;

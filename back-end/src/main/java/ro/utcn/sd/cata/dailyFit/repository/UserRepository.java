@@ -5,9 +5,9 @@ import ro.utcn.sd.cata.dailyFit.entity.User;
 
 import java.util.Optional;
 
-public interface UserRepository extends CrudRepository<User,Integer> {
+public interface UserRepository extends CrudRepository<User, Integer> {
 
-     Optional<User> findByNameAndPassword(String name, String password);
+    Optional<User> findByNameAndPassword(String name, String password);
 
-    Optional<User> findByUsername(String username);
+    //Optional<User> findByUsername(String username);
 }

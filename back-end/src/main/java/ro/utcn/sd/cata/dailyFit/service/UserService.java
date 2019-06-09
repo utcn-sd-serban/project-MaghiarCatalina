@@ -28,47 +28,45 @@ public class UserService {
     }
 
     @Transactional
-    public UserReturnDTO create(UserCreateDTO userCreateDTO){
+    public UserReturnDTO create(UserCreateDTO userCreateDTO) {
         UserReturnDTO created = new UserReturnDTO();
         UserResultsDTO userResultsDTO = calculateCaloriesAndMacros(userCreateDTO);
         User createdUser = new User();
-        modelMapper.map(userCreateDTO,createdUser);
-        modelMapper.map(userResultsDTO,createdUser);
-        modelMapper.map(userRepository.save(createdUser),created);
+        modelMapper.map(userCreateDTO, createdUser);
+        modelMapper.map(userResultsDTO, createdUser);
+        modelMapper.map(userRepository.save(createdUser), created);
         return created;
     }
 
-    public UserResultsDTO calculateCaloriesAndMacros(UserCreateDTO userCreateDTO){
+    private UserResultsDTO calculateCaloriesAndMacros(UserCreateDTO userCreateDTO) {
 
         Double calories;
         Double proteins, carbs, fats;
-        if(userCreateDTO.getGender().equals(Gender.FEMALE)){
-            calories = (9.247* userCreateDTO.getWeight()+3.098* userCreateDTO.getHeight()-4.33* userCreateDTO.getAge()+447.593)*1.35;
-        }
-        else if(userCreateDTO.getGender().equals(Gender.MALE)){
-            calories = (13.397* userCreateDTO.getWeight()+4.799* userCreateDTO.getHeight()-5.677* userCreateDTO.getAge()+88.362)*1.35;
-        }
-        else {
+        if (userCreateDTO.getGender().equals(Gender.FEMALE)) {
+            calories = (9.247 * userCreateDTO.getWeight() + 3.098 * userCreateDTO.getHeight() - 4.33 * userCreateDTO.getAge() + 447.593) * 1.35;
+        } else if (userCreateDTO.getGender().equals(Gender.MALE)) {
+            calories = (13.397 * userCreateDTO.getWeight() + 4.799 * userCreateDTO.getHeight() - 5.677 * userCreateDTO.getAge() + 88.362) * 1.35;
+        } else {
             throw new GenderNotFoundException();
         }
 
-        if(userCreateDTO.getGoal().equals(Goal.CUT)){
-            calories -= 0.2*calories;
+        if (userCreateDTO.getGoal().equals(Goal.CUT)) {
+            calories -= 0.2 * calories;
+        } else if (userCreateDTO.getGoal().equals(Goal.BUILD)) {
+            calories += +0.2 * calories;
         }
-        else if(userCreateDTO.getGoal().equals(Goal.BUILD)){
-            calories += + 0.2*calories;
-        }
-        proteins =2.0* userCreateDTO.getWeight();
-        fats = 0.8* userCreateDTO.getWeight();
-        carbs= (calories-proteins*4-fats*9)/4;
-        return new UserResultsDTO(calories.intValue(),proteins.intValue(),carbs.intValue(),fats.intValue());
+        proteins = 2.0 * userCreateDTO.getWeight();
+        fats = 0.8 * userCreateDTO.getWeight();
+        carbs = (calories - proteins * 4 - fats * 9) / 4;
+        return new UserResultsDTO(calories.intValue(), proteins.intValue(), carbs.intValue(), fats.intValue());
     }
 
-    public UserReturnDTO findByNameAndPassword(UserLoginDTO userLoginDTO){
-        User user = userRepository.findByNameAndPassword(userLoginDTO.getName(),userLoginDTO.getPassword())
+    @Transactional
+    public UserReturnDTO findByNameAndPassword(UserLoginDTO userLoginDTO) {
+        User user = userRepository.findByNameAndPassword(userLoginDTO.getName(), userLoginDTO.getPassword())
                 .orElseThrow(UserNotFoundException::new);
-        UserReturnDTO userReturnDTO= new UserReturnDTO();
-        modelMapper.map(user,userReturnDTO);
+        UserReturnDTO userReturnDTO = new UserReturnDTO();
+        modelMapper.map(user, userReturnDTO);
         return userReturnDTO;
     }
 }

@@ -15,6 +15,6 @@ public class UserSeed implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-    //dupa ce fac service-ul
+    //to do
     }
 }
